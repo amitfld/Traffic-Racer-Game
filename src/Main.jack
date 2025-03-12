@@ -1,0 +1,16 @@
+/**
+ * The main class of the Traffic Racer game.
+ */
+class Main {
+
+    /** Initializes a Traffic Racer Game and starts running it. */
+    function void main() {
+        var TrafficRacerGame game;
+        let game = TrafficRacerGame.new();
+        do game.run();
+        do game.dispose();
+        do Screen.clearScreen();
+        do Sys.halt();
+        return;
+    }
+}

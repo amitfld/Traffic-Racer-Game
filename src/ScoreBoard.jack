@@ -1,0 +1,67 @@
+/**
+ * Draw the game's score board
+ * Everything that needs to be done before the player can start the game
+ * Has methods for initializing the score board, and update it.
+ */
+class ScoreBoard{
+    field int usd;
+    field int score;
+
+    constructor ScoreBoard new(){
+        let score = 0;
+        let usd = 0;
+        return this;
+    }
+    // Initializing the scoreboard
+    method void initializeScoreBoard(int highScore, int totalUSD){
+        // Set score to 0
+        do Output.moveCursor(0,0);
+	    do Output.printString("Score:");
+        do Output.moveCursor(0,6);
+	    do Output.printInt(0);
+        // Set dollar count to 0
+        do Output.moveCursor(1,0);
+        do Output.printString("USD:");
+        do Output.moveCursor(1,4);
+	    do Output.printInt(0);
+        // Set high score to the highscore given
+        do Output.moveCursor(0,45);
+        do Output.printString("HighScore:");
+        do Output.moveCursor(0,55);
+        do Output.printInt(highScore);
+        // Set bank balance to the totalUSD given
+        do Output.moveCursor(1,45);
+        do Output.printString("Bank($):");
+        do Output.moveCursor(1,53);
+        do Output.printInt(totalUSD);
+        return;
+    }
+
+    // Updating the scoreboard
+    method void updateScoreBoard(){
+        do Output.moveCursor(0,6);
+	    do Output.printInt(score);
+        do Output.moveCursor(1,4);
+	    do Output.printInt(usd);
+        return ;
+    }
+
+    // Increasing USD
+    method void updateUSD(){
+        let usd = (usd + 100);
+        do updateScoreBoard();
+        return;
+    }
+
+    // Increasing Score
+    method int updateScore(){
+        let score = (score + 1);
+        do updateScoreBoard();
+        return score;
+    }
+
+    method void dispose() {
+		do Memory.deAlloc(this);
+		return;
+	}    
+}

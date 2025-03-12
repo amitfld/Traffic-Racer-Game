@@ -1,0 +1,148 @@
+/**
+* A graphical Dollar. Characterized by a screen location.
+* Has methods for drawing, erasing, getting lane starting point, and moving down the screen.
+*/
+class Dollar {
+    field int x, y; // The dollar's screen location.
+
+    // Constructor for the dollar
+    constructor Dollar new(int StartX, int StartY) {
+        let x = StartX;
+        let y = StartY;
+        return this;
+    }
+
+	method void drawDollar(int location) {
+	var int memAddress; 
+	let memAddress = 16384+location;
+	// column 0
+	do Memory.poke(memAddress, -1);
+	do Memory.poke(memAddress +32, 1);
+	do Memory.poke(memAddress +64, 1);
+	do Memory.poke(memAddress +96, -16423);
+	do Memory.poke(memAddress +128, -24483);
+	do Memory.poke(memAddress +160, -24495);
+	do Memory.poke(memAddress +192, -24495);
+	do Memory.poke(memAddress +224, -24495);
+	do Memory.poke(memAddress +256, -24495);
+	do Memory.poke(memAddress +288, -24495);
+	do Memory.poke(memAddress +320, -16431);
+	do Memory.poke(memAddress +352, 1);
+	do Memory.poke(memAddress +384, -1);
+	// column 1
+	do Memory.poke(memAddress +1, -1);
+	do Memory.poke(memAddress +33, -30720);
+	do Memory.poke(memAddress +65, -25088);
+	do Memory.poke(memAddress +97, -17537);
+	do Memory.poke(memAddress +129, -22208);
+	do Memory.poke(memAddress +161, -29120);
+	do Memory.poke(memAddress +193, -25536);
+	do Memory.poke(memAddress +225, -18368);
+	do Memory.poke(memAddress +257, -22208);
+	do Memory.poke(memAddress +289, -21696);
+	do Memory.poke(memAddress +321, -24961);
+	do Memory.poke(memAddress +353, -30720);
+	do Memory.poke(memAddress +385, -1);
+	return;
+}
+  
+	method void eraseDollar(int location) {
+	var int memAddress; 
+	let memAddress = 16384+location;
+	// column 0
+	do Memory.poke(memAddress, 0);
+	do Memory.poke(memAddress +32, 0);
+	do Memory.poke(memAddress +64, 0);
+	do Memory.poke(memAddress +96, 0);
+	do Memory.poke(memAddress +128, 0);
+	do Memory.poke(memAddress +160, 0);
+	do Memory.poke(memAddress +192, 0);
+	do Memory.poke(memAddress +224, 0);
+	do Memory.poke(memAddress +256, 0);
+	do Memory.poke(memAddress +288, 0);
+	do Memory.poke(memAddress +320, 0);
+	do Memory.poke(memAddress +352, 0);
+	do Memory.poke(memAddress +384, 0);
+	// column 1
+	do Memory.poke(memAddress +1, 0);
+	do Memory.poke(memAddress +33, 0);
+	do Memory.poke(memAddress +65, 0);
+	do Memory.poke(memAddress +97, 0);
+	do Memory.poke(memAddress +129, 0);
+	do Memory.poke(memAddress +161, 0);
+	do Memory.poke(memAddress +193, 0);
+	do Memory.poke(memAddress +225, 0);
+	do Memory.poke(memAddress +257, 0);
+	do Memory.poke(memAddress +289, 0);
+	do Memory.poke(memAddress +321, 0);
+	do Memory.poke(memAddress +353, 0);
+	do Memory.poke(memAddress +385, 0);
+	return;
+}
+
+    /**
+    * Moves the dollar downward on the screen.
+    * Returns:
+    * 0 - dollar is still on the screen, no collision
+    * 1 - dollar has left the screen
+    * 2 - Collision detected (dollar collected)
+    */
+    method int moveDown(int location, int step, int carLane, int dollarLane, int speed) {
+		var int screenBottom;
+		var int delayCounter;
+
+		let y = location / 32; // 186 - 231 is collision
+		
+		// Define the screen bottom limit
+		let screenBottom = 8179; // Memory location equivalent to y = 256 
+
+		if (~(location = 24544)) {
+			// Draw the dollar at the current location
+			do drawDollar(location);
+
+			// Introduce a delay to slow down the movement
+			let delayCounter = 0;
+			while (delayCounter < speed) { 
+				let delayCounter = delayCounter + 1;
+			}
+
+			// Erase the dollar at the current location
+			do eraseDollar(location);
+
+			// Update the dollar's location
+			let location = location + (96 * step);
+
+			// Check if the dollar has left the screen
+			if (~(location < screenBottom)) {
+				return 1; // dollar is no longer visible
+			} else {
+				// Redraw the dollar at the new location
+				do drawDollar(location);
+			}
+			// Check if the car has collected the dollar
+			if (carLane = dollarLane){
+				if(~(y < 186)){
+					if (~(y > 231)){
+						do eraseDollar(location);
+						return 2; // collected
+					}
+				}
+			}
+		}
+    return 0; // dollar is still on the screen
+}
+
+	// The start location of the dollar for each lane
+    function int startPointDollar(int lane) {
+        if (lane = 4) { return ((30*32) + (426/16)); }
+        if (lane = 3) { return ((30*32) + (316/16)); }
+        if (lane = 2) { return ((30*32) + (190/16)); }
+        if (lane = 1) { return ((30*32) + (64/16)); }
+        return 0;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+}

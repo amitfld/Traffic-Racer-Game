@@ -1,0 +1,221 @@
+/**
+* A graphical barrel. Characterized by a screen location.
+* Has methods for drawing, erasing, getting lane starting point, and moving down the screen.
+*/
+class Barrel{
+
+	field int x, y; //the Barrel's screen location.
+
+    constructor Barrel new(int Ax, int Ay){
+		let x = Ax;
+		let y = Ay;
+		return this;
+	}
+
+	method void drawBarrel(int location) {
+		var int memAddress; 
+		let memAddress = 16384+location;
+		// column 0
+		do Memory.poke(memAddress, -64);
+		do Memory.poke(memAddress +32, 32);
+		do Memory.poke(memAddress +64, 16);
+		do Memory.poke(memAddress +96, 8);
+		do Memory.poke(memAddress +128, 4);
+		do Memory.poke(memAddress +160, 2);
+		do Memory.poke(memAddress +192, 1);
+		do Memory.poke(memAddress +224, 1);
+		do Memory.poke(memAddress +256, 3);
+		do Memory.poke(memAddress +288, 7);
+		do Memory.poke(memAddress +320, 15);
+		do Memory.poke(memAddress +352, 31);
+		do Memory.poke(memAddress +384, 63);
+		do Memory.poke(memAddress +416, -1);
+		do Memory.poke(memAddress +448, -1);
+		do Memory.poke(memAddress +480, -1);
+		do Memory.poke(memAddress +512, -1);
+		do Memory.poke(memAddress +544, -1);
+		do Memory.poke(memAddress +576, -1);
+		do Memory.poke(memAddress +608, -1);
+		do Memory.poke(memAddress +640, -1);
+		do Memory.poke(memAddress +672, -1);
+		do Memory.poke(memAddress +704, -1);
+		do Memory.poke(memAddress +736, -1);
+		do Memory.poke(memAddress +768, -1);
+		do Memory.poke(memAddress +800, -1);
+		do Memory.poke(memAddress +832, -1);
+		do Memory.poke(memAddress +864, -1);
+		do Memory.poke(memAddress +896, -2);
+		do Memory.poke(memAddress +928, -4);
+		do Memory.poke(memAddress +960, -8);
+		do Memory.poke(memAddress +992, -16);
+		// column 1
+		do Memory.poke(memAddress +33, 1);
+		do Memory.poke(memAddress +65, 2);
+		do Memory.poke(memAddress +97, 4);
+		do Memory.poke(memAddress +129, 8);
+		do Memory.poke(memAddress +161, 16);
+		do Memory.poke(memAddress +193, 32);
+		do Memory.poke(memAddress +225, 32);
+		do Memory.poke(memAddress +257, 48);
+		do Memory.poke(memAddress +289, 56);
+		do Memory.poke(memAddress +321, 60);
+		do Memory.poke(memAddress +353, 62);
+		do Memory.poke(memAddress +385, 63);
+		do Memory.poke(memAddress +417, 63);
+		do Memory.poke(memAddress +449, 63);
+		do Memory.poke(memAddress +481, 63);
+		do Memory.poke(memAddress +513, 63);
+		do Memory.poke(memAddress +545, 63);
+		do Memory.poke(memAddress +577, 63);
+		do Memory.poke(memAddress +609, 63);
+		do Memory.poke(memAddress +641, 63);
+		do Memory.poke(memAddress +673, 63);
+		do Memory.poke(memAddress +705, 63);
+		do Memory.poke(memAddress +737, 63);
+		do Memory.poke(memAddress +769, 63);
+		do Memory.poke(memAddress +801, 63);
+		do Memory.poke(memAddress +833, 63);
+		do Memory.poke(memAddress +865, 63);
+		do Memory.poke(memAddress +897, 31);
+		do Memory.poke(memAddress +929, 15);
+		do Memory.poke(memAddress +961, 7);
+		do Memory.poke(memAddress +993, 3);
+		return;
+	}
+
+	method void eraseBarrel(int location) {
+		var int memAddress; 
+		let memAddress = 16384 + location;
+		// column 0
+		do Memory.poke(memAddress, 0);
+		do Memory.poke(memAddress +32, 0);
+		do Memory.poke(memAddress +64, 0);
+		do Memory.poke(memAddress +96, 0);
+		do Memory.poke(memAddress +128, 0);
+		do Memory.poke(memAddress +160, 0);
+		do Memory.poke(memAddress +192, 0);
+		do Memory.poke(memAddress +224, 0);
+		do Memory.poke(memAddress +256, 0);
+		do Memory.poke(memAddress +288, 0);
+		do Memory.poke(memAddress +320, 0);
+		do Memory.poke(memAddress +352, 0);
+		do Memory.poke(memAddress +384, 0);
+		do Memory.poke(memAddress +416, 0);
+		do Memory.poke(memAddress +448, 0);
+		do Memory.poke(memAddress +480, 0);
+		do Memory.poke(memAddress +512, 0);
+		do Memory.poke(memAddress +544, 0);
+		do Memory.poke(memAddress +576, 0);
+		do Memory.poke(memAddress +608, 0);
+		do Memory.poke(memAddress +640, 0);
+		do Memory.poke(memAddress +672, 0);
+		do Memory.poke(memAddress +704, 0);
+		do Memory.poke(memAddress +736, 0);
+		do Memory.poke(memAddress +768, 0);
+		do Memory.poke(memAddress +800, 0);
+		do Memory.poke(memAddress +832, 0);
+		do Memory.poke(memAddress +864, 0);
+		do Memory.poke(memAddress +896, 0);
+		do Memory.poke(memAddress +928, 0);
+		do Memory.poke(memAddress +960, 0);
+		do Memory.poke(memAddress +992, 0);
+		// column 1
+		do Memory.poke(memAddress +33, 0);
+		do Memory.poke(memAddress +65, 0);
+		do Memory.poke(memAddress +97, 0);
+		do Memory.poke(memAddress +129, 0);
+		do Memory.poke(memAddress +161, 0);
+		do Memory.poke(memAddress +193, 0);
+		do Memory.poke(memAddress +225, 0);
+		do Memory.poke(memAddress +257, 0);
+		do Memory.poke(memAddress +289, 0);
+		do Memory.poke(memAddress +321, 0);
+		do Memory.poke(memAddress +353, 0);
+		do Memory.poke(memAddress +385, 0);
+		do Memory.poke(memAddress +417, 0);
+		do Memory.poke(memAddress +449, 0);
+		do Memory.poke(memAddress +481, 0);
+		do Memory.poke(memAddress +513, 0);
+		do Memory.poke(memAddress +545, 0);
+		do Memory.poke(memAddress +577, 0);
+		do Memory.poke(memAddress +609, 0);
+		do Memory.poke(memAddress +641, 0);
+		do Memory.poke(memAddress +673, 0);
+		do Memory.poke(memAddress +705, 0);
+		do Memory.poke(memAddress +737, 0);
+		do Memory.poke(memAddress +769, 0);
+		do Memory.poke(memAddress +801, 0);
+		do Memory.poke(memAddress +833, 0);
+		do Memory.poke(memAddress +865, 0);
+		do Memory.poke(memAddress +897, 0);
+		do Memory.poke(memAddress +929, 0);
+		do Memory.poke(memAddress +961, 0);
+		do Memory.poke(memAddress +993, 0);
+		return;
+	}
+
+	/**
+	* Checks both if barrel is still on screen and if there is a collision 
+	* return 0 if no collision and barrel still on screen
+	* return 1 if no collision but barrel no longer on screen
+	* return 2 if collision detected
+	*/
+	method int moveDown(int location, int step, int carLane, int barrelLane, int speed) {
+		var int screenBottom;
+		var int delayCounter;
+
+		let y = location / 32; // 168 - 234 is collision
+
+		// Define the screen bottom limit
+		let screenBottom = 8179; // Memory location equivalent to y = 256 
+
+		if (~(location = 24544)) {
+			// Draw the barrel at the current location
+			do drawBarrel(location);
+
+			// Introduce a delay to slow down the movement
+			let delayCounter = 0;
+			while (delayCounter < speed) { // Adjust this value to control speed
+				let delayCounter = delayCounter + 1;
+			}
+
+			// Erase the barrel at the current location
+			do eraseBarrel(location);
+
+			// Update the barrel's location
+			let location = location + (96 * step);
+
+			// Check if the barrel has left the screen
+			if (~(location < screenBottom)) {
+				return 1; // Barrel is no longer visible
+			} else {
+				// Redraw the barrel at the new location
+				do drawBarrel(location);
+			}
+			// Check if the barrel has collided with the car
+			if (carLane = barrelLane){
+				if(~(y < 168)){
+					if (~(y > 234)){
+						return 2; // Collision detected
+					}
+				}
+			}
+		}
+		return 0; // Barrel is still on the screen
+	}
+
+	// The start location of the barrel for each lane
+	function int startPointBarrel(int lane){
+		if(lane = 4){ return ((30*32) + (426/16));}
+		if(lane = 3){ return ((30*32) + (316/16));}
+		if(lane = 2){ return ((30*32) + (190/16));}
+		if(lane = 1){ return ((30*32) + (64/16));}
+		return 0;
+	}
+
+	method void dispose(){
+		do Memory.deAlloc(this);
+		return;
+	}
+
+}

@@ -1,0 +1,235 @@
+/**
+ * Traffic Racer Game!
+ * had methods for running the game, and resetting it
+ */
+class TrafficRacerGame{
+    field int seed;
+    field int carLane;
+    field int currScore;
+    field int highScore;
+    field int totalUSD;
+    field boolean playerLost;
+    field boolean startedGame;
+    field GameSetup gameSetup;
+    field ScoreBoard scoreBoard;
+    field Car myCar;
+    field Cone cone1;
+    field Cone cone2;
+    field Barrel barrel;
+    field Dollar dollar;
+    field Failed GameOverScreen; 
+
+    // Initialize the game
+    constructor TrafficRacerGame new(){
+        let highScore = 0;
+        let totalUSD = 0;
+        let playerLost = false;
+        let startedGame = false;
+        let gameSetup = GameSetup.new();
+        let scoreBoard = ScoreBoard.new();
+        do scoreBoard.initializeScoreBoard(highScore, totalUSD);
+        let myCar = Car.new();
+        do myCar.initializeCar();
+        let carLane = 2;
+        let cone1 = Cone.new(0,0);
+        let cone2 = Cone.new(0,0);
+        let barrel = Barrel.new(0,0);
+        let dollar = Dollar.new(0,0);
+        let GameOverScreen = Failed.new(0, 0, 0, "null");
+        return this;
+    }
+
+    // Resets the game when player loses and want to restart
+    method void reset(){
+        do Screen.clearScreen();
+        let gameSetup = GameSetup.new();
+         let playerLost = false;
+        let startedGame = false;
+        let gameSetup = GameSetup.new();
+        let scoreBoard = ScoreBoard.new();
+        do scoreBoard.initializeScoreBoard(highScore, totalUSD);
+        let myCar = Car.new();
+        do myCar.initializeCar();
+        let carLane = 2;
+        let cone1 = Cone.new(0,0);
+        let cone2 = Cone.new(0,0);
+        let barrel = Barrel.new(0,0);
+        let dollar = Dollar.new(0,0);
+        let GameOverScreen = Failed.new(0, 0, 0, "null");
+        do run();
+        return;
+    }
+
+    // Running the game
+    method boolean run(){
+        var char key;
+        var char arrow;
+        var char gameOverKey;
+        var int conesLane;
+        var int barrelLane;
+        var int dollarLane;
+        var int cone1Loc;
+        var int cone2Loc;
+        var int barrelLoc;
+        var int dollarLoc;
+        var int coneStatus;
+        var int barrelStatus;
+        var int dollarStatus;
+        var int currUSD;
+        var int carSpeed;
+        let coneStatus = 1;
+        let barrelStatus = 1;
+        let dollarStatus = 1;
+        let carSpeed = 1500;
+        let playerLost = false;
+        let startedGame = false;
+        let currUSD = 0;
+        let currScore = 0;
+        let seed = 0;
+        let carLane = 2;
+        // Wait until player presses space
+        while(~(startedGame)){
+            let key = Keyboard.keyPressed();
+            if (key = 32){ // Space
+                let startedGame = true;
+            }
+        }
+        // Play until player loses
+        while(~(playerLost)){
+            let currScore = scoreBoard.updateScore();
+            let seed = seed + 1;
+            // objectStatus:
+            // 0 if visible on screen
+            // 1 if isn't visible on screen
+            // 2 if collision detected
+            if((barrelStatus = 1) & (coneStatus = 1) & (dollarStatus = 1)){ // If none of them on screen
+                // Generate ranfome lanes until all three are different
+                do Random.setSeed(seed);
+                let conesLane = Random.betweenOneAndFour();
+                let barrelLane = Random.betweenOneAndFour();
+                while(barrelLane = conesLane){
+                    let barrelLane = Random.betweenOneAndFour();
+                }
+                let dollarLane = Random.betweenOneAndFour();
+                while((dollarLane = conesLane) | (dollarLane = barrelLane)){
+                    let dollarLane = Random.betweenOneAndFour();
+                }
+                // Draw the objects on starting locations and update status
+                let cone1Loc = Cone.startPoint1(conesLane);
+                let cone2Loc = Cone.startPoint2(conesLane);
+                let barrelLoc = Barrel.startPointBarrel(barrelLane);
+                let dollarLoc = Dollar.startPointDollar(dollarLane);
+                do cone1.drawCone(cone1Loc);
+                do cone2.drawCone(cone2Loc);
+                do barrel.drawBarrel(barrelLoc);
+                do dollar.drawDollar(dollarLoc);
+                let coneStatus = 0;
+                let barrelStatus = 0;
+                let dollarStatus = 0;
+            }
+            // Move down the objects until collision detected with either the barrel or cones
+            do cone1.moveDown(cone1Loc, 1, carLane, conesLane, carSpeed);
+            let coneStatus = cone2.moveDown(cone2Loc, 1, carLane, conesLane, carSpeed);
+            if (coneStatus = 2){ // Collision detected
+                let playerLost = true;
+                // Adding this game's money to the total balance
+                let totalUSD = totalUSD + currUSD;
+                // Updating high score if needed
+                if (highScore < currScore){
+                    let highScore = currScore;
+                }
+                // Display GAME OVER message
+                do GameOverScreen.gameOverMessage(highScore, totalUSD);                
+                let key = 0;
+                // Wait until player presses 'R' to restart or 'Q' to quit
+                while(~((key = 82) | (key = 81))){ // R=82, Q=81
+                    let key = Keyboard.keyPressed();
+                } 
+                if(key = 82){ // Pressed 'R'
+                    do reset(); // Resets the game
+                } else {
+                    if(key = 81){ // Pressed 'Q'
+                        do Screen.clearScreen();
+                        return false; // Stops the game
+                    }
+                }
+            } else {
+                let cone1Loc = cone1Loc + (96*1);
+                let cone2Loc = cone2Loc + (96*1);
+                let barrelStatus = barrel.moveDown(barrelLoc,1, carLane, barrelLane, carSpeed);
+            }
+            if (barrelStatus = 2){ // Collision detected
+                let playerLost = true;
+                // Adding this game's money to the total balance
+                let totalUSD = totalUSD + currUSD;
+                // Updating high score if needed
+                if (highScore < currScore){
+                    let highScore = currScore;
+                }
+                // Display GAME OVER message
+                do GameOverScreen.gameOverMessage(highScore, totalUSD);
+                let key = 0;
+                // Wait until player presses 'R' to restart or 'Q' to quit
+                while(~((key = 82) | (key = 81))){ // R=82, Q=81
+                    let key = Keyboard.keyPressed();
+                } 
+                if(key = 82){ // Pressed 'R'
+                    do reset(); // Resets the game
+                } else {
+                    if(key = 81){ // Pressed 'Q'
+                        do Screen.clearScreen();
+                        return false; // Stops the game
+                    }
+                }
+            } else {
+                let barrelLoc = barrelLoc + (96*1);
+                if (dollarStatus = 0){
+                    let dollarStatus = dollar.moveDown(dollarLoc, 1, carLane, dollarLane, carSpeed);
+                }
+            }
+            if (dollarStatus = 2){ // Dollar collected
+                if (carSpeed > 350){
+                    let carSpeed = (carSpeed - 40); // Make the car progression faster
+                }
+                let currUSD = currUSD + 100; // Updating dollar count
+                do scoreBoard.updateUSD(); // Updating score board
+                do dollar.eraseDollar(dollarLoc);
+                do myCar.setLane(carLane);
+                do myCar.draw();
+                let dollarStatus = 1;
+            } else {
+                let dollarLoc = dollarLoc + (96*1);
+            }
+            let arrow = Keyboard.keyPressed();
+            if (arrow = 132){ // right arrow
+                // Move the car a lant to the right
+                let carLane = (carLane + myCar.moveRight());
+                while(~(arrow = 0)){
+                    let arrow = Keyboard.keyPressed();
+                }
+            } else {
+                if (arrow = 130){ // left arrow
+                    // Move the car a lant to the left
+                    let carLane = (carLane - myCar.moveLeft());
+                    while(~(arrow = 0)){
+                        let arrow = Keyboard.keyPressed();
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    method void dispose() {
+        do GameOverScreen.dispose();
+        do gameSetup.dispose();
+        do scoreBoard.dispose();
+        do myCar.dispose();
+        do cone1.dispose();
+        do cone2.dispose();
+        do barrel.dispose();
+        do dollar.dispose();
+		do Memory.deAlloc(this);
+		return;
+	}    
+}

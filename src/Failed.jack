@@ -1,0 +1,62 @@
+/**
+* A failed class for when player loses the game.
+* Characterized by a screen location, size, and text.
+* Has method for displaying the game over message
+*/
+class Failed {
+
+    field int x, y;
+    field int size;
+    field String text;
+
+    /** Constructor to initialize the Failed object */
+    constructor Failed new(int Ax, int Ay, int Asize, String message) {
+        let x = Ax;
+        let y = Ay;
+        let size = Asize;
+        let text = message;
+        return this;
+    }
+
+    method void gameOverMessage(int highScore, int totalUSD) {
+        var int col, row;
+
+        // Turn screen white
+        do Screen.clearScreen();
+
+        // Display messages
+        let row = 8;
+        let col = 25;
+        do Output.moveCursor(row, col);
+        do Output.printString("GAME OVER");
+
+        let row = 10;
+        let col = 23;
+        do Output.moveCursor(row, col);
+        do Output.printString("Your Score is : ");
+        do Output.printInt(highScore);
+
+        let row = 12;
+        let col = 18;
+        do Output.moveCursor(row, col);
+        do Output.printString("Your Balance in $ is : ");
+        do Output.printInt(totalUSD);
+
+        let row = 14;
+        let col = 16;
+        do Output.moveCursor(row, col);
+        do Output.printString("Press R to Restart, Q to Quit");
+
+        let row = 22;
+        let col = 22;
+        do Output.moveCursor(row, col);
+        do Output.printString("Made by Amit Feldman and Yotam Markman");
+
+        return;
+    }
+
+    method void dispose() {
+		do Memory.deAlloc(this);
+		return;
+	}
+}
