@@ -80,7 +80,7 @@ class TrafficRacerGame{
         let coneStatus = 1;
         let barrelStatus = 1;
         let dollarStatus = 1;
-        let carSpeed = 1500;
+        let carSpeed = 1200;
         let playerLost = false;
         let startedGame = false;
         let currUSD = 0;
