@@ -72,6 +72,11 @@ It is **not affiliated with or related to the official Traffic Racer game** or i
 ## 👥 Authors
 
 - Amit Feldman
+- 
+GitHub: [@amitfld](https://github.com/amitfld)
+
+LinkdIn: [Amit Feldman](https://www.linkedin.com/in/amit-fld/)
+
 - Yotam Markman
 
 ---
