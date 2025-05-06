@@ -4,10 +4,10 @@ This project is an implementation of a **Traffic Racer** game 🛣️ using the 
 
 ---
 
-## ⚠️ Disclaimer
+>## ⚠️ Disclaimer
 
-This project is created **purely for educational purposes** as part of the Nand2Tetris course.  
-It is **not affiliated with or related to the official Traffic Racer game** or its creators.
+>This project is created **purely for educational purposes** as part of the Nand2Tetris course.  
+>It is **not affiliated with or related to the official Traffic Racer game** or its creators.
 
 ---
 
